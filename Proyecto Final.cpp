@@ -11,6 +11,7 @@ struct Sabana                   /*Se declara esta estructura de datos para guard
 {
     string codigoMateria;
     bool materiaAprobada;
+    bool materiaInscrita;
 };
 
 struct Estudiante               /*Esta estructura de datos contiene todos los datos que necesita el sistema para cada estudiante
@@ -60,7 +61,6 @@ int main()      /*Esta es la función principal en la cual se ingresan los datos 
     cout<<"*****************************************************************" << endl;
     cout<<"         **********************************************          " << endl;
     cout<<"         *       Universidad de las Am\202ricas       *          " << endl;
-    cout<<"         **********************************************          " << endl;
     cout<<"****************************************************************" << endl;
 
     do  //EL ciclo se encarga de validar si el dato ingresado en la cantidad de estudiantes es digito, si no lo es, entonces se pide el dato de nuevo
@@ -76,7 +76,7 @@ int main()      /*Esta es la función principal en la cual se ingresan los datos 
                                                         materias en la sbana de la cantidad de estudiantes que hay en el sistema*/
     for(int i = 0 ; i < cantidadEstudiantes - 1 ; i++)
     {
-        bool matriculada = false;                       //esta bandera se utiliza para saber si la materia se encontró en la matriz
+        bool matriculada = true;                       //esta bandera se utiliza para saber si la materia se encontró en la matriz
         cin.ignore(256,'\n');                           //se utiliza esta función para limbiar el buffer y evitar fallos en el uso de getline
         cout<<"Nombre del estudiante " << i+1 << ": ";  //se muestra qué dat debe ingresar
         getline(cin,estudiantes[i].nombreEstudiante);   //se recibe el nombre completo con espacios con la función que viene implementada
@@ -85,7 +85,7 @@ int main()      /*Esta es la función principal en la cual se ingresan los datos 
             cout<<"C\242digo del estudiante " << estudiantes[i].nombreEstudiante << " (0-99999): ";
             cin>>codigoTemporal;
         }
-        while (codigoTemporal < 0 || codigoTemporal > 99999 || ValidarCodigo(estudiantes,codigoTemporal,cantidadEstudiantes)!=-1);
+        while (codigoTemporal < 0 || codigoTemporal > 9999999 || ValidarCodigo(estudiantes,codigoTemporal,cantidadEstudiantes)!=-1);
         //el ciclo de la linea anterior se asegura que el codigo que se está ingresando no esté repetido y que no esté fuera del rango
         estudiantes[i].codigoEstudiante = codigoTemporal;   //una vez el código es correcto se asigna el código al estudiante
 
@@ -264,7 +264,7 @@ int ValidarCodigo(Estudiante estudiantes[], int codigo, int cantidad)   //esta e
     return -1;
 }
 
-void ConsultarDatos(Estudiante estudiantes[], int cantidad) //Esta función se encarga de la opción dos
+void ConsultarDatos(Estudiante estudiantes[], int cantidad) //Esta función se encarga de la opción dos si es seleccionada
 {
     int codigo, posicion;
     do
@@ -464,7 +464,7 @@ bool permisosAsignaturas(Estudiante estudiantes [],int posicion,float opcion)   
         int creditosGanados = 0;//se recorre la matriz acumulando la cantidad de créditos para determinar si es posible dar el permiso
         for (int j = 0 ; j < 5 ; j++)
             for (int k = 0 ; k < 5 ; k++)
-                if (estudiantes[posicion].materias[j][k].materiaAprobada == true )
+                if (estudiantes[posicion].materias[j][k].materiaAprobada != true )
                     creditosGanados+=3;
         if (creditosGanados >= 60)
             return true;
@@ -604,3 +604,4 @@ bool esEntero(string s)
         if( s[i] < '0' || s[i] > '9' ) return false;
     return true;
 }
+
